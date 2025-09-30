@@ -1,0 +1,83 @@
+@{
+    ViewData["Title"] = "Perfil do Usuário";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InnovaHub - Perfil do Usuário</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .yellow-accent {
+            background-color: #FFFF00;
+        }
+
+            .yellow-accent:hover {
+                background-color: #E6E600;
+            }
+
+        .blue-accent {
+            background-color: #1E40AF;
+        }
+
+            .blue-accent:hover {
+                background-color: #1E3A8A;
+            }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="d-flex min-vh-100">
+        
+
+        <div class="flex-grow-1 bg-light">
+            <div class="p-4">
+                <h2 class="fw-bold text-dark mb-4">Perfil do Usuário</h2>
+
+                <div class="bg-white rounded shadow-sm p-4 mb-4">
+                    <div class="d-flex gap-4 align-items-start">
+                        <div>
+                            <h5 class="fw-bold text-dark mb-3">IMAGEM DE PERFIL</h5>
+                            <img src="~/assets/images/profile_avatar.png" alt="Profile" class="rounded border" width="120" height="120">
+                        </div>
+                        <div class="flex-grow-1">
+                            <button class="btn yellow-accent fw-medium mb-2">Enviar imagem</button>
+                            <p class="small text-muted mb-0">Formatos: jpg, gif, png. Max size: 500k.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded shadow-sm p-4 mb-4">
+                    <div class="row g-4 align-items-start">
+                        <div class="col-md-3">
+                            <h5 class="fw-bold text-dark">INFORMAÇÕES PESSOAIS</h5>
+                        </div>
+                        <div class="col-md-9">
+                            <label class="form-label">Nome de exibição*</label>
+                            <input type="text" class="form-control" placeholder="Escreva seu nome de exibição...">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded shadow-sm p-4 mb-4 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="fw-bold text-dark">EMAIL DE CONTATO</h5>
+                        <p class="text-primary text-decoration-underline mb-0">gustavo@gmail.com</p>
+                    </div>
+                    <button class="btn yellow-accent fw-medium">Alterar email</button>
+                </div>
+
+                <div class="d-flex gap-3">
+                    <button class="btn yellow-accent fw-medium px-4">Descartar</button>
+                    <button class="btn yellow-accent fw-medium px-4">Aplicar alterações</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envio de Ideias - InnovaHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .modal-yellow-bg {
+            background-color: #FFC700;
+            color: #000;
+        }
+
+        .btn-blue {
+            background-color: #0039A6;
+            color: white;
+            border: none;
+            padding: 12px 48px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+            .btn-blue:hover {
+                background-color: #002d80;
+                color: white;
+            }
+
+        .btn-black {
+            background-color: #000;
+            color: white;
+            border: none;
+            padding: 12px 64px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+            .btn-black:hover {
+                background-color: #333;
+                color: white;
+            }
+
+        .form-control, .form-select {
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            background-color: white;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #000;
+        }
+
+        .modal-content {
+            border: none;
+            border-radius: 8px;
+        }
+
+        .complexity-slider {
+            width: 100%;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .slider-label {
+            font-weight: 600;
+            min-width: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="modal fade" id="ideaSubmissionModal" tabindex="-1" aria-labelledby="ideaSubmissionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content modal-yellow-bg">
+                <div class="modal-body p-4 p-md-5">
+                    <div class="mb-4">
+                        <h2 class="fw-bold mb-3" style="font-size: 28px;">Envio de Ideia InnovaHub</h2>
+                        <div>
+                            <p class="mb-1 fw-semibold" style="font-size: 14px;">ENVIE SUA IDEIA</p>
+                            <p class="fst-italic mb-0" style="font-size: 14px;">
+                                Compartilhe suas ideias inovadoras para aprimorar nossa organização.
+                            </p>
+                        </div>
+                    </div>
+
+                    <form id="ideaForm">
+                        <div class="mb-4">
+                            <label for="teamSelect" class="form-label">Time</label>
+                            <select class="form-select" id="teamSelect" required>
+                                <option value="">Todos os departamentos</option>
+                                <option value="ti">Tecnologia da Informação</option>
+                                <option value="rh">Recursos Humanos</option>
+                                <option value="marketing">Marketing</option>
+                                <option value="vendas">Vendas</option>
+                                <option value="financeiro">Financeiro</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="ideaDetails" class="form-label">DETALHES DA IDEIA</label>
+                            <textarea class="form-control"
+                                      id="ideaDetails"
+                                      rows="5"
+                                      placeholder="Qual é a sua ideia? Por favor, descreva em detalhes..."
+                                      required
+                                      style="resize: none;"></textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="slider-container">
+                                <span class="slider-label">1</span>
+                                <input type="range"
+                                       class="form-range complexity-slider"
+                                       min="1"
+                                       max="10"
+                                       value="5"
+                                       id="complexitySlider">
+                                <span class="slider-label">10</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="challenges" class="form-label" style="font-size: 14px;">
+                                Quais desafios você prevê na implementação desta ideia?
+                            </label>
+                            <textarea class="form-control"
+                                      id="challenges"
+                                      rows="3"
+                                      placeholder="Descreva os possíveis desafios..."
+                                      style="resize: none;"></textarea>
+                        </div>
+
+                        <div class="d-flex gap-3 justify-content-center mb-4 mt-4">
+                            <button type="submit" class="btn btn-blue">
+                                Enviar
+                            </button>
+                            <button type="button" class="btn btn-blue" data-bs-dismiss="modal">
+                                Cancelar
+                            </button>
+                        </div>
+
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-black" id="saveBtn">
+                                Salvar ideia
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="text-center">
+            <h1 class="mb-4">InnovaHub</h1>
+            <button type="button" class="btn btn-warning btn-lg" data-bs-toggle="modal" data-bs-target="#ideaSubmissionModal">
+                ➕ Nova Ideia
+            </button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('ideaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const team = document.getElementById('teamSelect').value;
+            const details = document.getElementById('ideaDetails').value;
+            const complexity = document.getElementById('complexitySlider').value;
+            const challenges = document.getElementById('challenges').value;
+
+            if (!team || !details) {
+                alert('Por favor, preencha todos os campos obrigatórios!');
+                return;
+            }
+
+            console.log({
+                team,
+                details,
+                complexity,
+                challenges
+            });
+
+            alert('Ideia enviada com sucesso!');
+
+            const modal = bootstrap.Modal.getInstance(document.getElementById('ideaSubmissionModal'));
+            modal.hide();
+
+            this.reset();
+        });
+
+        document.getElementById('saveBtn').addEventListener('click', function() {
+            const details = document.getElementById('ideaDetails').value;
+
+            if (!details) {
+                alert('Adicione detalhes para salvar a ideia!');
+                return;
+            }
+
+            alert('Ideia salva como rascunho!');
+        });
+    </script>
+
+</body>
+</html>

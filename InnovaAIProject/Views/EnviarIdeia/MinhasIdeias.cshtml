@@ -1,0 +1,548 @@
+@{
+    ViewData["Title"] = "Minhas ideias";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Ideias - InnovaHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --yellow-highlight: #fbbf24;
+            --yellow-light: #fef3c7;
+            --blue-link: #3b82f6;
+            --blue-light: #dbeafe;
+            --gray-light: #f3f4f6;
+            --gray-medium: #e5e7eb;
+            --gray-dark: #6b7280;
+            --success-color: #10b981;
+            --success-light: #d1fae5;
+            --danger-color: #ef4444;
+            --danger-light: #fee2e2;
+            --warning-color: #f59e0b;
+            --warning-light: #fef3c7;
+        }
+
+        body {
+            background-color: var(--gray-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .btn-yellow {
+            background-color: var(--yellow-highlight);
+            border-color: var(--yellow-highlight);
+            color: #000;
+            font-weight: 600;
+        }
+
+            .btn-yellow:hover {
+                background-color: #f59e0b;
+                border-color: #f59e0b;
+                color: #000;
+            }
+
+        .btn-blue {
+            background-color: var(--blue-link);
+            border-color: var(--blue-link);
+            color: white;
+            font-weight: 600;
+        }
+
+            .btn-blue:hover {
+                background-color: #2563eb;
+                border-color: #2563eb;
+                color: white;
+            }
+
+        .card-idea {
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 1rem;
+        }
+
+            .card-idea:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            }
+
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 1rem;
+            font-weight: 600;
+        }
+
+        .status-approved {
+            background-color: var(--success-light);
+            color: var(--success-color);
+        }
+
+        .status-analysis {
+            background-color: var(--warning-light);
+            color: var(--warning-color);
+        }
+
+        .status-development {
+            background-color: var(--blue-light);
+            color: var(--blue-link);
+        }
+
+        .status-rejected {
+            background-color: var(--danger-light);
+            color: var(--danger-color);
+        }
+
+        .stats-card {
+            background: linear-gradient(135deg, white 0%, var(--gray-light) 100%);
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .profile-section {
+            background: linear-gradient(135deg, var(--blue-link) 0%, #1d4ed8 100%);
+            color: white;
+            border-radius: 1rem;
+        }
+
+        .activity-item {
+            border-left: 3px solid var(--gray-medium);
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+
+            .activity-item.success {
+                border-left-color: var(--success-color);
+            }
+
+            .activity-item.warning {
+                border-left-color: var(--warning-color);
+            }
+
+            .activity-item.info {
+                border-left-color: var(--blue-link);
+            }
+
+        .idea-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        @@media (max-width: 768px) {
+            .idea-grid
+        {
+            grid-template-columns: 1fr;
+        }
+
+        .filter-section {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .metric-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid py-4">
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="h2 fw-bold mb-1">Minhas Ideias</h1>
+                        <p class="text-muted mb-0">Acompanhe suas contribuições para a inovação</p>
+                    </div>
+                    <button class="btn btn-yellow" data-bs-toggle="modal" data-bs-target="#ideaSubmissionModal">
+                        <i class="bi bi-plus-circle me-2"></i>Nova Ideia
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="row mb-4">
+                    <div class="col-md-3 mb-3">
+                        <div class="card stats-card h-100">
+                            <div class="card-body text-center">
+                                <div class="metric-icon bg-primary bg-opacity-10 text-primary mx-auto mb-2">
+                                    <i class="bi bi-lightbulb"></i>
+                                </div>
+                                <h3 class="fw-bold mb-1">12</h3>
+                                <small class="text-muted">Total de Ideias</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card stats-card h-100">
+                            <div class="card-body text-center">
+                                <div class="metric-icon bg-success bg-opacity-10 text-success mx-auto mb-2">
+                                    <i class="bi bi-check-circle"></i>
+                                </div>
+                                <h3 class="fw-bold mb-1">5</h3>
+                                <small class="text-muted">Aprovadas</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card stats-card h-100">
+                            <div class="card-body text-center">
+                                <div class="metric-icon bg-warning bg-opacity-10 text-warning mx-auto mb-2">
+                                    <i class="bi bi-clock"></i>
+                                </div>
+                                <h3 class="fw-bold mb-1">4</h3>
+                                <small class="text-muted">Em Análise</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card stats-card h-100">
+                            <div class="card-body text-center">
+                                <div class="metric-icon" style="background-color: var(--blue-light); color: var(--blue-link);">
+                                    <i class="bi bi-heart"></i>
+                                </div>
+                                <h3 class="fw-bold mb-1">87</h3>
+                                <small class="text-muted">Total Votos</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-section p-3 mb-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <div class="row g-2">
+                                <div class="col-md-4">
+                                    <select class="form-select form-select-sm">
+                                        <option>Todos os Status</option>
+                                        <option>Em Análise</option>
+                                        <option>Aprovada</option>
+                                        <option>Em Desenvolvimento</option>
+                                        <option>Rejeitada</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-select form-select-sm">
+                                        <option>Todas Categorias</option>
+                                        <option>Processo</option>
+                                        <option>Tecnologia</option>
+                                        <option>RH</option>
+                                        <option>Infraestrutura</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-select form-select-sm">
+                                        <option>Mais Recentes</option>
+                                        <option>Mais Votadas</option>
+                                        <option>Mais Comentadas</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <button class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-funnel me-1"></i>Filtrar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="idea-grid">
+                    <div class="card card-idea">
+                        <div class="card-header bg-transparent border-0 pb-0">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <span class="status-badge status-analysis">Em Análise</span>
+                                    <small class="text-muted ms-2">Processo</small>
+                                </div>
+                                <small class="text-muted">há 2 dias</small>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title fw-bold mb-2">Sessão de Brainstorming Mensal</h6>
+                            <p class="card-text text-muted small mb-3">
+                                Proponho que implementemos uma sessão de brainstorming mensal para incentivar o pensamento criativo e a colaboração entre os membros da equipe.
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex gap-3">
+                                    <small class="text-muted">
+                                        <i class="bi bi-heart me-1"></i><strong>12</strong>
+                                    </small>
+                                    <small class="text-muted">
+                                        <i class="bi bi-chat me-1"></i><strong>5</strong>
+                                    </small>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-outline-secondary btn-sm">Editar</button>
+                                    <button class="btn btn-blue btn-sm">Detalhes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card card-idea">
+                        <div class="card-header bg-transparent border-0 pb-0">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <span class="status-badge status-approved">Aprovada</span>
+                                    <small class="text-muted ms-2">Tecnologia</small>
+                                </div>
+                                <small class="text-muted">há 1 semana</small>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title fw-bold mb-2">Sistema de Feedback Aprimorado</h6>
+                            <p class="card-text text-muted small mb-3">
+                                Acho que precisamos aprimorar nosso sistema de feedback para torná-lo mais ágil e eficiente para todos os colaboradores.
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex gap-3">
+                                    <small class="text-muted">
+                                        <i class="bi bi-heart me-1"></i><strong>18</strong>
+                                    </small>
+                                    <small class="text-muted">
+                                        <i class="bi bi-chat me-1"></i><strong>8</strong>
+                                    </small>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-outline-secondary btn-sm">Editar</button>
+                                    <button class="btn btn-blue btn-sm">Detalhes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card card-idea">
+                        <div class="card-header bg-transparent border-0 pb-0">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <span class="status-badge status-development">Em Desenvolvimento</span>
+                                    <small class="text-muted ms-2">RH</small>
+                                </div>
+                                <small class="text-muted">há 2 semanas</small>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title fw-bold mb-2">Programa de Mentoria Interna</h6>
+                            <p class="card-text text-muted small mb-3">
+                                Criar um programa de mentoria que conecte funcionários experientes com novos talentos para acelerar o desenvolvimento profissional.
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex gap-3">
+                                    <small class="text-muted">
+                                        <i class="bi bi-heart me-1"></i><strong>25</strong>
+                                    </small>
+                                    <small class="text-muted">
+                                        <i class="bi bi-chat me-1"></i><strong>12</strong>
+                                    </small>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-outline-secondary btn-sm">Editar</button>
+                                    <button class="btn btn-blue btn-sm">Detalhes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card card-idea">
+                        <div class="card-header bg-transparent border-0 pb-0">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <span class="status-badge status-rejected">Rejeitada</span>
+                                    <small class="text-muted ms-2">Infraestrutura</small>
+                                </div>
+                                <small class="text-muted">há 1 mês</small>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title fw-bold mb-2">Espaço de Coworking Criativo</h6>
+                            <p class="card-text text-muted small mb-3">
+                                Designar uma área específica no escritório como espaço criativo com materiais e ambiente propício para inovação.
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex gap-3">
+                                    <small class="text-muted">
+                                        <i class="bi bi-heart me-1"></i><strong>7</strong>
+                                    </small>
+                                    <small class="text-muted">
+                                        <i class="bi bi-chat me-1"></i><strong>3</strong>
+                                    </small>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-outline-secondary btn-sm">Editar</button>
+                                    <button class="btn btn-blue btn-sm">Detalhes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card card-idea">
+                        <div class="card-header bg-transparent border-0 pb-0">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <span class="status-badge status-analysis">Em Análise</span>
+                                    <small class="text-muted ms-2">Processo</small>
+                                </div>
+                                <small class="text-muted">há 3 dias</small>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title fw-bold mb-2">Workshop de Inovação Trimestral</h6>
+                            <p class="card-text text-muted small mb-3">
+                                Organizar workshops trimestrais focados em metodologias de inovação como Design Thinking e Lean Startup.
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex gap-3">
+                                    <small class="text-muted">
+                                        <i class="bi bi-heart me-1"></i><strong>15</strong>
+                                    </small>
+                                    <small class="text-muted">
+                                        <i class="bi bi-chat me-1"></i><strong>7</strong>
+                                    </small>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-outline-secondary btn-sm">Editar</button>
+                                    <button class="btn btn-blue btn-sm">Detalhes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card card-idea">
+                        <div class="card-header bg-transparent border-0 pb-0">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <span class="status-badge status-approved">Aprovada</span>
+                                    <small class="text-muted ms-2">Tecnologia</small>
+                                </div>
+                                <small class="text-muted">há 3 semanas</small>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title fw-bold mb-2">Plataforma de Colaboração Digital</h6>
+                            <p class="card-text text-muted small mb-3">
+                                Implementar uma plataforma digital integrada para facilitar a colaboração entre equipes remotas e presenciais.
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex gap-3">
+                                    <small class="text-muted">
+                                        <i class="bi bi-heart me-1"></i><strong>22</strong>
+                                    </small>
+                                    <small class="text-muted">
+                                        <i class="bi bi-chat me-1"></i><strong>14</strong>
+                                    </small>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-outline-secondary btn-sm">Editar</button>
+                                    <button class="btn btn-blue btn-sm">Detalhes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="profile-section p-4 mb-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle me-3 overflow-hidden" style="width: 60px; height: 60px;">
+                            <img src="/assets/images/profile_avatar.png" alt="Foto do perfil" class="w-100 h-100" style="object-fit: cover;">
+                        </div>
+                        <div>
+                            <h5 class="mb-0 fw-bold">Meu Perfil</h5>
+                            <small class="opacity-75">Inovador desde 2023</small>
+                        </div>
+                    </div>
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <div class="h4 fw-bold mb-0">12</div>
+                            <small class="opacity-75">Ideias</small>
+                        </div>
+                        <div class="col-4">
+                            <div class="h4 fw-bold mb-0">87</div>
+                            <small class="opacity-75">Votos</small>
+                        </div>
+                        <div class="col-4">
+                            <div class="h4 fw-bold mb-0">5º</div>
+                            <small class="opacity-75">Ranking</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header bg-white border-0">
+                        <h6 class="fw-bold mb-0">Atividade Recente</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="activity-item success">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <small class="fw-semibold">Ideia Aprovada!</small>
+                                    <div class="text-muted" style="font-size: 0.75rem;">Sistema de Feedback foi aprovado para implementação</div>
+                                </div>
+                                <small class="text-muted">2h</small>
+                            </div>
+                        </div>
+                        <div class="activity-item info">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <small class="fw-semibold">Novos Votos</small>
+                                    <div class="text-muted" style="font-size: 0.75rem;">Brainstorming Mensal recebeu 3 votos</div>
+                                </div>
+                                <small class="text-muted">1d</small>
+                            </div>
+                        </div>
+                        <div class="activity-item warning">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <small class="fw-semibold">Comentário</small>
+                                    <div class="text-muted" style="font-size: 0.75rem;">Nova resposta na ideia "Mentoria"</div>
+                                </div>
+                                <small class="text-muted">3d</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header bg-white border-0">
+                        <h6 class="fw-bold mb-0">Ações Rápidas</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-yellow" data-bs-toggle="modal" data-bs-target="#ideaSubmissionModal">
+                                <i class="bi bi-plus-circle me-2"></i>Nova Ideia
+                            </button>
+                            <a href="@Url.Action("Index", "Ranking")" class="btn btn-outline-primary">
+                                <i class="bi bi-trophy me-2"></i>Ver Ranking
+                            </a>
+                            <button class="btn btn-blue">
+                                <i class="bi bi-search me-2"></i>Explorar Ideias
+                            </button>
+                            <a href="@Url.Action("Index", "Dashboard")" class="btn btn-outline-secondary">
+                                <i class="bi bi-bar-chart me-2"></i>Meus Relatórios
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

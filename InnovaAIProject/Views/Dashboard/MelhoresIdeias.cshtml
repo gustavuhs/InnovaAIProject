@@ -1,0 +1,271 @@
+@{
+    ViewData["Title"] = "Melhores Ideias";
+}
+
+<div class="dashboard-container p-4">
+    <h1 class="mb-4">Melhores ideias</h1>
+    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="categoriesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Categorias
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="categoriesDropdown">
+                <li><a class="dropdown-item" href="#">Todas</a></li>
+                <li><a class="dropdown-item" href="#">Tecnologia</a></li>
+                <li><a class="dropdown-item" href="#">Processos</a></li>
+                <li><a class="dropdown-item" href="#">Produtos</a></li>
+            </ul>
+        </div>
+        
+        <div class="d-flex">
+            <button class="btn btn-outline-secondary me-2">Ordenar</button>
+            <button class="btn btn-warning me-2">Rank</button>
+            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#ideaSubmissionModal">Enviar</button>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-9">
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="category-card bg-warning">
+                        <div class="category-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h5>CHAT COM IA</h5>
+                        <div class="d-flex justify-content-between mt-2">
+                            <span class="badge bg-dark">245</span>
+                            <span><i class="fas fa-upload"></i> Upload</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="category-card bg-warning">
+                        <div class="category-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <h5>IDEIAS DE VÍDEOS</h5>
+                        <div class="d-flex justify-content-between mt-2">
+                            <span class="badge bg-dark">160</span>
+                            <span><i class="fas fa-upload"></i> Upload</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="category-card bg-warning">
+                        <div class="category-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h5>DOCUMENTAÇÃO</h5>
+                        <div class="d-flex justify-content-between mt-2">
+                            <span class="badge bg-dark">39</span>
+                            <span><i class="fas fa-upload"></i> Upload</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="category-card bg-warning">
+                        <div class="category-icon">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <h5>DESIGN DE IDEIAS</h5>
+                        <div class="d-flex justify-content-between mt-2">
+                            <span class="badge bg-dark">112</span>
+                            <span><i class="fas fa-upload"></i> Upload</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <h5 class="mb-3">Dashboard <i class="fas fa-chart-bar"></i></h5>
+            
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="dashboard-card bg-warning">
+                        <div class="card-image">
+                            <img src="https://via.placeholder.com/150" alt="InnovaHub" class="img-fluid">
+                        </div>
+                        <div class="card-content">
+                            <h6>InnovaHub</h6>
+                            <p>ESTA PLATAFORMA INCENTIVA IDEIAS INOVADORAS DENTRO DAS EMPRESAS</p>
+                            <div class="card-footer">
+                                <i class="fas fa-comments"></i> CHAT COM IA
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="dashboard-card bg-warning">
+                        <div class="card-content text-center py-5">
+                            <i class="fas fa-chart-line fa-3x mb-3"></i>
+                            <h5>INSIGHTS</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="dashboard-card bg-warning">
+                        <div class="card-content text-center py-5">
+                            <i class="fas fa-trophy fa-3x mb-3"></i>
+                            <h5>RANKINGS DE IDEIAS</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="dashboard-card bg-warning">
+                        <div class="card-content text-center py-5">
+                            <i class="fas fa-file-alt fa-3x mb-3"></i>
+                            <h5>DOCUMENTOS DE SUPORTE</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="dashboard-card bg-warning">
+                        <div class="card-content text-center py-5">
+                            <i class="fas fa-chart-bar fa-3x mb-3"></i>
+                            <h5>PERFORMANCE</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="dashboard-card bg-warning">
+                        <div class="card-content text-center py-5">
+                            <i class="fas fa-question-circle fa-3x mb-3"></i>
+                            <h5>AJUDA?</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="dashboard-card bg-warning">
+                        <div class="card-content">
+                            <h6 class="text-center mb-3">Jornada da Inovação <i class="fas fa-calendar"></i></h6>
+                            <p class="mb-1">HOJE</p>
+                            <ul class="list-unstyled">
+                                <li>ENVIAR IDEIAS</li>
+                                <li>VISUALIZAR RANKING</li>
+                                <li>ENGAJAR COM A COMUNIDADE</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="dashboard-card bg-warning">
+                        <div class="card-content text-center py-5">
+                            <i class="fas fa-file-word fa-3x mb-3"></i>
+                            <h5>DIRETRIZES.DOCX</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="filter-sidebar">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5><i class="fas fa-filter"></i> FILTRAR IDEIAS</h5>
+                    <button class="btn-close"></button>
+                </div>
+                
+                <p>Limpar Filtro</p>
+                
+                <div class="filter-group mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="enviarIdeia" checked>
+                        <label class="form-check-label" for="enviarIdeia">
+                            <i class="fas fa-paper-plane"></i> ENVIAR IDEIA
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="ideiasEnviadas" checked>
+                        <label class="form-check-label" for="ideiasEnviadas">
+                            <i class="fas fa-paper-plane"></i> IDEIAS ENVIADAS
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="melhoresIdeias" checked>
+                        <label class="form-check-label" for="melhoresIdeias">
+                            <i class="fas fa-trophy"></i> MELHORES IDEIAS
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="conteudos" checked>
+                        <label class="form-check-label" for="conteudos">
+                            <i class="fas fa-file-alt"></i> CONTEÚDOS
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="envio" checked>
+                        <label class="form-check-label" for="envio">
+                            <i class="fas fa-upload"></i> ENVIO
+                        </label>
+                    </div>
+                </div>
+                
+                <h6 class="mb-3">Comunidade</h6>
+                
+                <div class="filter-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="entrar" checked>
+                        <label class="form-check-label" for="entrar">
+                            <i class="fas fa-sign-in-alt"></i> ENTRAR
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="entreParaOTime" checked>
+                        <label class="form-check-label" for="entreParaOTime">
+                            <i class="fas fa-users"></i> ENTRE PARA O TIME
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .dashboard-container {
+        background-color: #f8f9fa;
+    }
+    
+    .category-card {
+        border-radius: 10px;
+        padding: 20px;
+        height: 100%;
+        color: #212529;
+    }
+    
+    .category-icon {
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+    
+    .dashboard-card {
+        border-radius: 10px;
+        overflow: hidden;
+        height: 100%;
+        color: #212529;
+    }
+    
+    .card-image {
+        height: 120px;
+        overflow: hidden;
+    }
+    
+    .card-content {
+        padding: 15px;
+    }
+    
+    .card-footer {
+        margin-top: 10px;
+        font-weight: bold;
+    }
+    
+    .filter-sidebar {
+        background-color: white;
+        border-radius: 10px;
+        padding: 20px;
+    }
+</style>

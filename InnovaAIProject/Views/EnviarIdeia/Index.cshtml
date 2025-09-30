@@ -1,0 +1,694 @@
+@{
+    ViewData["Title"] = "Enviar Ideia";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InnovaHub - Plataforma de Ideias e Inovação</title>
+    <meta name="description" content="Plataforma colaborativa para compartilhar e desenvolver ideias inovadoras">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-primary: #f8f9fa;
+            --bg-secondary: #e9ecef;
+            --bg-card: #ffffff;
+            --text-primary: #212529;
+            --text-muted: #6c757d;
+            --yellow-highlight: #ffd700;
+            --blue-link: #0066cc;
+            --black-primary: #212529;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .bg-custom-secondary {
+            background-color: var(--bg-secondary) !important;
+        }
+
+        .btn-yellow {
+            background-color: var(--yellow-highlight);
+            border-color: var(--yellow-highlight);
+            color: var(--black-primary);
+            font-weight: 600;
+        }
+
+            .btn-yellow:hover {
+                background-color: #e6c200;
+                border-color: #e6c200;
+                color: var(--black-primary);
+            }
+
+        .btn-blue {
+            background-color: var(--blue-link);
+            border-color: var(--blue-link);
+            color: white;
+            font-weight: 600;
+        }
+
+            .btn-blue:hover {
+                background-color: #0052a3;
+                border-color: #0052a3;
+                color: white;
+            }
+
+        .btn-black {
+            background-color: var(--black-primary);
+            border-color: var(--black-primary);
+            color: white;
+            font-weight: 600;
+        }
+
+            .btn-black:hover {
+                background-color: #1a1e21;
+                border-color: #1a1e21;
+                color: white;
+            }
+
+        .form-select-custom {
+            background-color: var(--bg-secondary);
+            border: none;
+            border-radius: 0.375rem;
+        }
+
+        .idea-card {
+            border-bottom: 1px solid #dee2e6;
+            padding: 1.5rem;
+        }
+
+            .idea-card:last-child {
+                border-bottom: none;
+            }
+
+        .avatar-sm {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+
+        .avatar-xs {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+        }
+
+        .sidebar-section {
+            background-color: var(--bg-secondary);
+            border-radius: 0.75rem;
+            padding: 2rem;
+        }
+
+        .message-input {
+            position: relative;
+        }
+
+            .message-input input {
+                padding-right: 3rem;
+                border: none;
+                background-color: white;
+            }
+
+            .message-input .send-btn {
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                border: none;
+                background: none;
+                font-size: 1.2rem;
+                padding: 0.25rem;
+            }
+
+        .stats-section {
+            border-top: 1px solid #dee2e6;
+            border-bottom: 1px solid #dee2e6;
+            padding: 1rem 0;
+        }
+
+        .text-uppercase-bold {
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 0.875rem;
+            letter-spacing: 0.5px;
+        }
+
+        .interaction-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            padding: 0.25rem;
+        }
+
+        .floating-chat {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 400px;
+            max-width: 90vw;
+            z-index: 1000;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .chat-toggle-btn {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            background: var(--black-primary);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .chat-toggle-btn:hover {
+            background: #1a1e21;
+            transform: scale(1.05);
+        }
+
+        .chat-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transform: translateY(100%);
+            opacity: 0;
+            transition: all 0.3s ease-in-out;
+            max-height: 500px;
+        }
+
+        .chat-container.open {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .chat-header {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .chat-messages {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .chat-message {
+            display: flex;
+            margin-bottom: 1rem;
+            animation: slideInMessage 0.3s ease-out;
+        }
+
+        .typing-indicator {
+            opacity: 0.7;
+        }
+
+        .typing-dots {
+            display: inline-block;
+        }
+
+        .typing-dots span {
+            display: inline-block;
+            animation: typingDots 1.4s infinite;
+            font-size: 1.2em;
+            line-height: 1;
+        }
+
+        .typing-dots span:nth-child(1) { animation-delay: 0s; }
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @@keyframes typingDots {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+
+        @@keyframes slideInMessage {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chat-input-container {
+            padding: 1rem;
+            border-top: 1px solid #dee2e6;
+            background: #f8f9fa;
+        }
+
+        .floating-chat .message-input {
+            position: relative;
+        }
+
+        .floating-chat .message-input input {
+            padding-right: 3rem;
+            border: 1px solid #dee2e6;
+            border-radius: 25px;
+            background-color: white;
+        }
+
+        .floating-chat .message-input .send-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: var(--black-primary);
+            color: white;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .floating-chat .message-input .send-btn:hover {
+            background: #1a1e21;
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        /* Responsividade */
+        @@media (max-width: 768px) {
+            .floating-chat {
+                width: calc(100vw - 40px);
+                right: 20px;
+                left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="py-4">
+                    <h1 class="h2 fw-bold mb-4">Envie sua ideia</h1>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-3">
+                            <select class="form-select form-select-custom">
+                                <option selected>Título</option>
+                                <option value="1">Inovação</option>
+                                <option value="2">Processo</option>
+                                <option value="3">Produto</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select form-select-custom">
+                                <option selected>Adicionar Detalhes</option>
+                                <option value="1">Urgente</option>
+                                <option value="2">Normal</option>
+                                <option value="3">Baixa</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <button type="button" class="btn btn-black me-2" data-bs-toggle="modal" data-bs-target="#ideaSubmissionModal">
+                                Enviar Ideia
+                            </button>
+                            <button type="button" class="btn btn-yellow">
+                                Ver Ranking
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="stats-section d-flex justify-content-between align-items-center">
+                        <span class="text-muted">5 novas ideias enviadas esta semana</span>
+                        <button type="button" class="btn btn-yellow btn-sm">
+                            Ver Todas
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded shadow-sm">
+                    <div class="idea-card">
+                        <div class="d-flex">
+                            <img src="~/assets/images/anonimo_avatar.png" alt="Avatar anônimo" class="rounded avatar-sm me-3">
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <span class="text-uppercase-bold">ANÔNIMO</span>
+                                        <span class="ms-2 text-muted small">COMPARTILHOU UMA IDEIA</span>
+                                    </div>
+                                    <span class="text-muted small">HÁ 2 HORAS</span>
+                                </div>
+                                <p class="mb-3 text-muted">ACREDITO QUE NOSSO PROCESSO DE INOVAÇÃO PRECISA DE MAIS VISIBILIDADE...</p>
+                                <button type="button" class="btn btn-blue btn-sm">
+                                    Explore Ideas
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="idea-card">
+                        <div class="d-flex">
+                            <img src="~/assets/images/avatar_masculino.png" alt="Avatar Felipe" class="rounded avatar-sm me-3">
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <span class="text-uppercase-bold">FELIPE</span>
+                                        <span class="ms-2 text-muted small">COMPARTILHOU UMA IDEIA</span>
+                                    </div>
+                                    <span class="text-muted small">HÁ 3 HORAS</span>
+                                </div>
+                                <p class="mb-3 text-muted">ACHO QUE PRECISAMOS APRIMORAR NOSSO SISTEMA DE FEEDBACK...</p>
+                                <button type="button" class="btn btn-yellow btn-sm">
+                                    Retorno
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="idea-card">
+                        <div class="d-flex">
+                            <img src="~/assets/images/anonimo_avatar.png" alt="Avatar anônimo" class="rounded avatar-sm me-3">
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <span class="text-uppercase-bold">ANÔNIMO</span>
+                                        <span class="ms-2 text-muted small">COMPARTILHOU UMA IDEIA</span>
+                                    </div>
+                                    <span class="text-muted small">HÁ 4 HORAS</span>
+                                </div>
+                                <p class="mb-3 text-muted">APRECIO O FOCO NA INOVAÇÃO, MAS TENHO ALGUMAS PREOCUPAÇÕES...</p>
+                                <button type="button" class="btn btn-yellow btn-sm">
+                                    Missão
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="idea-card">
+                        <div class="d-flex">
+                            <img src="~/assets/images/anonimo_avatar.png" alt="Avatar anônimo" class="rounded avatar-sm me-3">
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <span class="text-uppercase-bold">ANÔNIMO</span>
+                                        <span class="ms-2 text-muted small">COMPARTILHOU UMA IDEIA</span>
+                                    </div>
+                                    <span class="text-muted small">HÁ 1 DIA</span>
+                                </div>
+                                <p class="mb-3 text-muted">VALORIZO NOSSA ABORDAGEM INOVADORA QUE ESTIMULA IDEIAS DIVERSAS...</p>
+                                <button type="button" class="btn btn-blue btn-sm">
+                                    Visão da Empresa
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="idea-card">
+                        <div class="d-flex">
+                            <img src="~/assets/images/avatar_feminino.png" alt="Avatar Isa" class="rounded avatar-sm me-3">
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <span class="text-uppercase-bold">ISA</span>
+                                        <span class="ms-2 text-muted small">COMPARTILHOU UMA IDEIA</span>
+                                    </div>
+                                    <span class="text-muted small">HÁ 1 DIA</span>
+                                </div>
+                                <p class="mb-3 text-muted">SINTO QUE HÁ POUCAS MANEIRAS DE CONTRIBUIR COM NOSSOS PROJETOS...</p>
+                                <button type="button" class="btn btn-yellow btn-sm">
+                                    Contribuir
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="floating-chat">
+        <button class="chat-toggle-btn" id="chatToggleBtn">💬</button>
+        <div class="chat-container" id="chatContainer">
+            <div class="chat-header">
+                <div class="d-flex align-items-center">
+                    <img src="/assets/images/suporte_avatar.png" alt="Avatar suporte" class="rounded avatar-sm me-3">
+                    <div class="flex-grow-1">
+                        <h6 class="mb-0 fw-bold">SUPORTE</h6>
+                        <small class="text-muted">Chat de Ideias</small>
+                    </div>
+                    <div class="d-flex gap-2 align-items-center">
+                        <button class="interaction-btn">⭐</button>
+                        <button class="interaction-btn">👍</button>
+                        <button type="button" class="btn btn-black btn-sm">
+                            Votar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+            </div>
+
+            <div class="chat-input-container">
+                <div class="message-input">
+                    <input type="text" class="form-control" id="chatInput" placeholder="Digite sua mensagem...">
+                    <button class="send-btn" id="sendBtn">✈️</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatToggleBtn = document.getElementById('chatToggleBtn');
+            const chatContainer = document.getElementById('chatContainer');
+            const chatInput = document.getElementById('chatInput');
+            const sendBtn = document.getElementById('sendBtn');
+            const chatMessages = document.getElementById('chatMessages');
+            
+            let isOpen = false;
+            
+            chatToggleBtn.addEventListener('click', function() {
+                isOpen = !isOpen;
+                
+                if (isOpen) {
+                    chatContainer.classList.add('open');
+                    chatToggleBtn.innerHTML = '✕';
+                    chatToggleBtn.style.transform = 'rotate(180deg)';
+                } else {
+                    chatContainer.classList.remove('open');
+                    chatToggleBtn.innerHTML = '💬';
+                    chatToggleBtn.style.transform = 'rotate(0deg)';
+                }
+            });
+            
+            const aiKnowledgeBase = {
+                greetings: {
+                    patterns: ['oi', 'olá', 'ola', 'bom dia', 'boa tarde', 'boa noite', 'hey', 'e aí', 'salve'],
+                    responses: [
+                        'Olá! 👋 Sou a IA do InnovaHub. Como posso ajudar você hoje com suas ideias inovadoras?',
+                        'Oi! 😊 Bem-vindo ao chat de inovação! Em que posso auxiliá-lo?',
+                        'Olá! Estou aqui para ajudar com suas ideias e projetos inovadores. O que você gostaria de discutir?'
+                    ]
+                },
+                innovation: {
+                    patterns: ['inovação', 'inovar', 'criatividade', 'criativo', 'ideia', 'ideias', 'brainstorm', 'solução', 'problema'],
+                    responses: [
+                        'Inovação é sobre transformar ideias em soluções! 💡 Que tipo de desafio você está enfrentando? Posso ajudar a pensar em abordagens criativas.',
+                        'Adoro falar sobre inovação! 🚀 Você tem alguma ideia específica em mente ou está buscando inspiração para um projeto?',
+                        'A criatividade floresce quando combinamos diferentes perspectivas. Conte-me mais sobre o que você está desenvolvendo!'
+                    ]
+                },
+                technology: {
+                    patterns: ['tecnologia', 'digital', 'app', 'aplicativo', 'sistema', 'software', 'ia', 'inteligência artificial', 'automação'],
+                    responses: [
+                        'Tecnologia é uma ferramenta poderosa para inovação! 💻 Que tipo de solução tecnológica você tem em mente?',
+                        'Interessante! A tecnologia pode revolucionar processos. Você está pensando em desenvolver algo específico?',
+                        'IA e automação estão transformando o mundo! Como você imagina aplicar isso no seu contexto?'
+                    ]
+                },
+                business: {
+                    patterns: ['negócio', 'empresa', 'startup', 'empreender', 'mercado', 'cliente', 'produto', 'serviço'],
+                    responses: [
+                        'Empreendedorismo e inovação andam juntos! 📈 Que aspecto do seu negócio você gostaria de inovar?',
+                        'Excelente! Falar sobre negócios é sempre empolgante. Você está desenvolvendo um novo produto ou melhorando algo existente?',
+                        'O mercado está sempre em evolução. Que oportunidade você identificou para criar valor?'
+                    ]
+                },
+                help: {
+                    patterns: ['ajuda', 'como', 'posso', 'conseguir', 'fazer', 'dica', 'sugestão', 'conselho'],
+                    responses: [
+                        'Claro! Estou aqui para ajudar. 🤝 Pode me contar mais detalhes sobre o que você precisa?',
+                        'Vou adorar ajudar você! Quanto mais detalhes você compartilhar, melhor posso orientá-lo.',
+                        'Perfeito! Sou especialista em inovação e adoro resolver desafios. Me conte o que está em mente!'
+                    ]
+                },
+                process: {
+                    patterns: ['processo', 'metodologia', 'etapa', 'passo', 'como fazer', 'implementar'],
+                    responses: [
+                        'Processos bem estruturados são fundamentais! 📋 Que tipo de metodologia você está buscando?',
+                        'Ótima pergunta! Posso sugerir algumas abordagens. Você está focando em qual área específica?',
+                        'Implementação é chave para o sucesso! Vamos quebrar isso em etapas práticas. Me conte mais sobre seu objetivo.'
+                    ]
+                },
+                team: {
+                    patterns: ['equipe', 'time', 'colaboração', 'grupo', 'pessoas', 'colaborar'],
+                    responses: [
+                        'Colaboração é essencial para inovação! 👥 Como você planeja engajar sua equipe no processo criativo?',
+                        'Times diversos geram as melhores ideias! Que desafios você enfrenta na colaboração?',
+                        'Trabalho em equipe potencializa a criatividade. Você tem alguma estratégia específica em mente?'
+                    ]
+                }
+            };
+
+            const conversationContext = {
+                lastTopic: null,
+                userPreferences: [],
+                conversationHistory: []
+            };
+
+            function analyzeIntent(message) {
+                const lowerMessage = message.toLowerCase();
+                
+                for (const [category, data] of Object.entries(aiKnowledgeBase)) {
+                    for (const pattern of data.patterns) {
+                        if (lowerMessage.includes(pattern)) {
+                            return category;
+                        }
+                    }
+                }
+                
+                return 'general';
+            }
+
+            function generateAIResponse(userMessage) {
+                const intent = analyzeIntent(userMessage);
+                conversationContext.lastTopic = intent;
+                conversationContext.conversationHistory.push(userMessage);
+                
+                if (aiKnowledgeBase[intent]) {
+                    const responses = aiKnowledgeBase[intent].responses;
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    return randomResponse;
+                }
+                
+                const generalResponses = [
+                    'Interessante perspectiva! 🤔 Pode elaborar mais sobre isso? Adoro explorar ideias em profundidade.',
+                    'Que ideia fascinante! Como você imagina implementar isso na prática?',
+                    'Vejo potencial nisso! 💡 Você já pensou em quais seriam os próximos passos?',
+                    'Excelente ponto! Isso me lembra de algumas tendências inovadoras. Quer que eu compartilhe algumas insights?',
+                    'Muito criativo! 🎨 Como você chegou a essa conclusão? O processo criativo é sempre interessante.',
+                    'Essa abordagem tem potencial! Você considerou os possíveis desafios e como superá-los?'
+                ];
+                
+                return generalResponses[Math.floor(Math.random() * generalResponses.length)];
+            }
+
+            function addTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'chat-message typing-indicator';
+                typingDiv.id = 'typing-indicator';
+                
+                typingDiv.innerHTML = `
+                    <img src="/assets/images/suporte_avatar.png" alt="Avatar suporte" class="rounded avatar-xs me-3">
+                    <div class="small text-muted">
+                        <span class="typing-dots">
+                            <span>.</span><span>.</span><span>.</span>
+                        </span>
+                        IA está digitando...
+                    </div>
+                `;
+                
+                chatMessages.appendChild(typingDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function removeTypingIndicator() {
+                const typingIndicator = document.getElementById('typing-indicator');
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                }
+            }
+
+            function sendMessage() {
+                const message = chatInput.value.trim();
+                if (message) {
+                    addMessage(message, 'user');
+                    chatInput.value = '';
+                    
+                    addTypingIndicator();
+                    
+                    const responseTime = Math.random() * 2000 + 1000;
+                    
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        const aiResponse = generateAIResponse(message);
+                        addMessage(aiResponse, 'bot');
+                    }, responseTime);
+                }
+            }
+            
+            function addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'chat-message';
+                
+                const avatar = sender === 'user' ? 
+                    '/assets/images/profile_avatar.png' : 
+                    '/assets/images/suporte_avatar.png';
+                
+                messageDiv.innerHTML = `
+                    <img src="${avatar}" alt="Avatar" class="rounded avatar-xs me-3">
+                    <div class="small text-muted">${text}</div>
+                `;
+                
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            sendBtn.addEventListener('click', sendMessage);
+            
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            document.addEventListener('click', function(e) {
+                const floatingChat = document.querySelector('.floating-chat');
+                if (isOpen && !floatingChat.contains(e.target)) {
+                    isOpen = false;
+                    chatContainer.classList.remove('open');
+                    chatToggleBtn.innerHTML = '💬';
+                    chatToggleBtn.style.transform = 'rotate(0deg)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

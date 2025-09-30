@@ -1,0 +1,52 @@
+@{
+    ViewData["Title"] = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title">Bem-vindo ao InnovaHub</h2>
+                    <p class="card-text">Aqui você pode gerenciar suas ideias e acompanhar o progresso da inovação.</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <div class="card mb-3">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-lightbulb fa-3x mb-3 text-primary"></i>
+                                    <h5 class="card-title">Minhas Ideias</h5>
+                                    <p class="card-text">Gerencie suas ideias e acompanhe o status.</p>
+                                    <a href="@Url.Action("MinhasIdeias", "EnviarIdeia")" class="btn btn-outline-primary">Ver Ideias</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card mb-3">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-chart-line fa-3x mb-3 text-success"></i>
+                                    <h5 class="card-title">Dashboard</h5>
+                                    <p class="card-text">Visualize métricas e estatísticas.</p>
+                                    <a href="@Url.Action("Index", "Dashboard")" class="btn btn-outline-success">Ver Dashboard</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card mb-3">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-trophy fa-3x mb-3 text-warning"></i>
+                                    <h5 class="card-title">Melhores Ideias</h5>
+                                    <p class="card-text">Veja as ideias mais bem avaliadas.</p>
+                                    <a href="@Url.Action("Index", "Ranking")" class="btn btn-outline-warning">Ver Ranking</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
